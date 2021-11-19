@@ -79,29 +79,44 @@ namespace aplikacja
         }
 
         private void dwa_Click(object sender, RoutedEventArgs e)
-        {/*
+        {
             const int N = 20;
             int pmin = 0;
             int pmax = N - 1;
             int k, p;
+
+            pmin = 0; pmax = N - 2;
             do
             {
                 p = -1;
-                for (k = pmin; k < pmax; k++)
+                for (k = pmin; k <= pmax; k++)
                     if (d[k] > d[k + 1])
                     {
-                        Swap<int>()    swap(d[k], d[k + 1]);
-                        if (p < 0) pmin = k;
+                        d[k] = d[k] + d[k + 1];
+                        d[k + 1] = d[k] - d[k + 1];
+                        d[k] = d[k] - d[k + 1];
                         p = k;
                     }
-                if (pmin) pmin--;
-                pmax = p;
-            } while{ (p >= 0); }
+                if (p < 0) break;
+                pmax = p - 1;
+                p = -1;
+                for (k = pmax; k >= pmin; k--)
+                    if (d[k] > d[k + 1])
+                    {
+                        d[k] = d[k] + d[k + 1];
+                        d[k + 1] = d[k] - d[k + 1];
+                        d[k] = d[k] - d[k + 1];
+                        p = k;
+                    }
+                pmin = p + 1;
+            } while (p >= 0);
+
+
 
             // Wyświetlamy wynik sortowania
+            this.wynik.Clear();
+            for (k = 0; k < N; k++) this.wynik.Text = wynik.Text.PadRight(4) + " " + d[k];
 
-            for (k = 0; k < N; k++) cout << setw(4) << d[k];
-         */  
         }
 
         private void jeden_Click(object sender, RoutedEventArgs e)
