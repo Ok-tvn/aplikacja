@@ -28,7 +28,24 @@ namespace aplikacja
         {
             InitializeComponent();
         }
+        void Sortuj_szybko(int lewy, int prawy)
+        {
+            int i, j, piwot;
 
+            i = (lewy + prawy) / 2;
+            piwot = d[i]; d[i] = d[prawy];
+            for (j = i = lewy; i < prawy; i++)
+                if (d[i] < piwot)
+                {
+                    d[i] = d[i] + d[j];
+                    d[j] = d[i] - d[j];
+                    d[i] = d[i] - d[j];
+                    j++;
+                }
+            d[prawy] = d[j]; d[j] = piwot;
+            if (lewy < j - 1) Sortuj_szybko(lewy, j - 1);
+            if (j + 1 < prawy) Sortuj_szybko(j + 1, prawy);
+        }
         private void radiobox_1_Checked(object sender, RoutedEventArgs e)
         {
             var rand = new Random();
@@ -52,6 +69,39 @@ namespace aplikacja
         private void radiobox_3_Checked(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void btn_szybkie_Click(object sender, RoutedEventArgs e)
+        {
+            Sortuj_szybko(0, N - 1);
+            this.wynik.Clear();
+            for (i = 0; i < N; i++)  this.wynik.Text= wynik.Text.PadRight(4)+" "+d[i];
+        }
+
+        private void dwa_Click(object sender, RoutedEventArgs e)
+        {/*
+            const int N = 20;
+            int pmin = 0;
+            int pmax = N - 1;
+            int k, p;
+            do
+            {
+                p = -1;
+                for (k = pmin; k < pmax; k++)
+                    if (d[k] > d[k + 1])
+                    {
+                        Swap<int>()    swap(d[k], d[k + 1]);
+                        if (p < 0) pmin = k;
+                        p = k;
+                    }
+                if (pmin) pmin--;
+                pmax = p;
+            } while{ (p >= 0); }
+
+            // Wyświetlamy wynik sortowania
+
+            for (k = 0; k < N; k++) cout << setw(4) << d[k];
+         */  
         }
 
         private void jeden_Click(object sender, RoutedEventArgs e)
