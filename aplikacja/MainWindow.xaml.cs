@@ -22,7 +22,10 @@ namespace aplikacja
     {
         const int N = 20;
         int[] d = new int[N];
-        int i, j, x;
+        int i, j, x, piwot;
+        int pmin = 0;
+        int pmax = N - 1;
+        int k, p;
 
         public MainWindow()
         {
@@ -30,7 +33,6 @@ namespace aplikacja
         }
         void Sortuj_szybko(int lewy, int prawy)
         {
-            int i, j, piwot;
 
             i = (lewy + prawy) / 2;
             piwot = d[i]; d[i] = d[prawy];
@@ -54,10 +56,6 @@ namespace aplikacja
             {
                 d[g] = rand.Next(0, 30);
             }
-            /*for (int m = 0; m < 20; m++)
-            {
-                this.wynik.Text += d[m].ToString() + " ";
-            }*/
 
         }
 
@@ -79,11 +77,7 @@ namespace aplikacja
         }
 
         private void dwa_Click(object sender, RoutedEventArgs e)
-        {
-            const int N = 20;
-            int pmin = 0;
-            int pmax = N - 1;
-            int k, p;
+        {   
 
             pmin = 0; pmax = N - 2;
             do
