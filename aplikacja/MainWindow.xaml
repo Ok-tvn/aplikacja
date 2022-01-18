@@ -10,14 +10,16 @@
         <Button x:Name="dwa" Content="bombelkowe" HorizontalAlignment="Left" Margin="135,111,0,0" VerticalAlignment="Top" Click="dwa_Click"/>
         <TextBox x:Name="wynik" HorizontalAlignment="Center" Margin="0,158,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="736" TextChanged="wynik_TextChanged" Height="40"/>
         <Button x:Name="jeden" Content="przez wstawianie" HorizontalAlignment="Left" Margin="20,111,0,0" VerticalAlignment="Top" Click="jeden_Click"/>
-        <RadioButton x:Name="radiobox_1" Content="pierwsza lista" HorizontalAlignment="Left" Margin="182,28,0,0" VerticalAlignment="Top" Checked="radiobox_1_Checked"/>
-        <RadioButton x:Name="radiobox_2" Content="druga lista" HorizontalAlignment="Left" Margin="182,49,0,0" VerticalAlignment="Top" Checked="radiobox_2_Checked"/>
-        <RadioButton x:Name="radiobox_3" Content="trzecia lista" HorizontalAlignment="Left" Margin="182,72,0,0" VerticalAlignment="Top" Checked="radiobox_3_Checked"/>
+        <RadioButton x:Name="radiobox_1" Content="pierwsza lista" HorizontalAlignment="Left" Margin="183,47,0,0" VerticalAlignment="Top" Checked="radiobox_1_Checked"/>
+        <RadioButton x:Name="radiobox_2" Content="druga lista" HorizontalAlignment="Left" Margin="183,68,0,0" VerticalAlignment="Top" Checked="radiobox_2_Checked"/>
+        <RadioButton x:Name="radiobox_3" Content="trzecia lista" HorizontalAlignment="Left" Margin="183,91,0,0" VerticalAlignment="Top" Checked="radiobox_3_Checked"/>
         <Button x:Name="heapsort_btn" Content="Przez kopcowanie" HorizontalAlignment="Left" Margin="303,111,0,0" VerticalAlignment="Top" Click="heapsort_btn_Click"/>
         <Button x:Name="scal_btn" Content="Przez Scalanie" HorizontalAlignment="Left" Margin="430,111,0,0" VerticalAlignment="Top" Click="scal_btn_Click"/>
         <Button x:Name="szybkie" Content="szybkie" HorizontalAlignment="Left" Margin="234,111,0,0" VerticalAlignment="Top" Click="szybkie_Click"/>
         <TextBox x:Name="czas_txt" HorizontalAlignment="Left" Height="25" Margin="10,10,0,0" Text="Czas jest równy" TextWrapping="Wrap" VerticalAlignment="Top" Width="93"/>
         <TextBox x:Name="czas_inp" HorizontalAlignment="Left" Margin="107,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="64" Height="25"/>
+        <Button x:Name="eksport_btn" Content="Eksport z Pliku" HorizontalAlignment="Left" Margin="185,13,0,0" VerticalAlignment="Top" Click="eksport_btn_Click"/>
+        <DocumentViewer x:Name="test" Margin="0,217,331,0"/>
 
     </Grid>
 </Window>

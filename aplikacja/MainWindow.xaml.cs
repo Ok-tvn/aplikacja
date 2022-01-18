@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -99,7 +100,7 @@ namespace aplikacja
             for (int g = 0; g < 20; g++)
             {
                 d[g] = rand.Next(0, 30);
-                table[g] = rand.Next(0, 30);
+                table[g+1] = rand.Next(0, 30);
             }
 
         }
@@ -111,7 +112,7 @@ namespace aplikacja
             for (int g = 0; g < 20; g++)
             {
                 d[g] = rand.Next(0, 30);
-                table[g] = rand.Next(0, 30);
+                table[g+1] = rand.Next(0, 30);
             }
         }
 
@@ -122,7 +123,7 @@ namespace aplikacja
             for (int g = 0; g < 20; g++)
             {
                 d[g] = rand.Next(0, 30);
-                table[g] = rand.Next(0, 30);
+                table[g+1] = rand.Next(0, 30);
             }
         }
 
@@ -184,6 +185,69 @@ namespace aplikacja
                this.wynik.Text += d[m].ToString() + " ";
             }
             dt.Stop();
+        }
+
+        private void eksport_btn_Click(object sender, RoutedEventArgs e)
+        {
+            // Create OpenFileDialog 
+
+            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+
+
+
+            // Set filter for file extension and default file extension 
+
+            dlg.DefaultExt = ".txt";
+
+            dlg.Filter = "Text documents (.txt)|*.txt";
+
+
+
+            // Display OpenFileDialog by calling ShowDialog method 
+
+            Nullable<bool> result = dlg.ShowDialog();
+
+
+
+            // Get the selected file name and display in a TextBox 
+            var zmienna = 0;
+            int g = 0;
+            String line;
+            try
+            {
+                //Pass the file path and file name to the StreamReader constructor
+                StreamReader sr = new StreamReader(dlg.FileName);
+                //Read the first line of text
+                line = sr.ReadLine();
+                //Continue to read until you reach end of file
+                while (line != null)
+                {
+                    if (zmienna < N)
+                    {
+                        //write the line to console window
+                        Console.WriteLine(line);
+                        wynik.Text = line;
+                        d[g] =int.Parse(line); 
+                        table[g+1] = int.Parse(line);
+                        //Read the next line
+                        line = sr.ReadLine();
+                        g++;
+                        zmienna++;
+                    }
+                    
+                }
+                //close the file
+                sr.Close();
+                Console.ReadLine();
+            }
+            catch (Exception d)
+            {
+                Console.WriteLine("Exception: " + d.Message);
+            }
+            finally
+            {
+                Console.WriteLine("Executing finally block.");
+            }
         }
 
         private void heapsort_btn_Click(object sender, RoutedEventArgs e)
