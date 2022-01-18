@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace aplikacja
 {
@@ -21,33 +22,76 @@ namespace aplikacja
     public partial class MainWindow : Window
     {
         const int N = 20;
+        int[] table = new int[N+1];
+        int[] table_merge = new int[N];
         int[] d = new int[N];
-        int i, j, x, piwot;
+        int  u,i,x,j;
         int pmin = 0;
         int pmax = N - 1;
         int k, p;
+        DispatcherTimer dt = new DispatcherTimer();
 
         public MainWindow()
         {
             InitializeComponent();
         }
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            dt.Interval = TimeSpan.FromMilliseconds(1);
+            dt.Tick += Dt_Tick;
+        }
+        private int increment = 0;
+        private void Dt_Tick(object sender, EventArgs e)
+        {
+            increment++;
+            czas_inp.Text = increment.ToString();
+        }
         void Sortuj_szybko(int lewy, int prawy)
         {
+            dt.Start();
+            int f,q,h=0, piwot;
 
-            i = (lewy + prawy) / 2;
-            piwot = d[i]; d[i] = d[prawy];
-            for (j = i = lewy; i < prawy; i++)
-                if (d[i] < piwot)
+            f = (lewy + prawy) / 2;
+            piwot = d[f]; d[f] = d[prawy];
+            for (q = f = lewy; f < prawy; f++)
+            {
+                if (d[f] < piwot)
                 {
-                    d[i] = d[i] + d[j];
-                    d[j] = d[i] - d[j];
-                    d[i] = d[i] - d[j];
-                    j++;
+                    h = d[f];
+                    d[f] = d[q];
+                    d[q] = h;
+                    q++;
                 }
-            d[prawy] = d[j]; d[j] = piwot;
-            if (lewy < j - 1) Sortuj_szybko(lewy, j - 1);
-            if (j + 1 < prawy) Sortuj_szybko(j + 1, prawy);
+            }
+            
+            d[prawy] = d[q]; d[q] = piwot;
+            if (lewy < q - 1) Sortuj_szybko(lewy, q - 1);
+            if (q + 1 < prawy) Sortuj_szybko(q + 1, prawy);
         }
+        void MergeSort(int i_p, int i_k)
+        {
+            dt.Start();
+            int i_s, i1, i2, i_o;
+
+            i_s = (i_p + i_k + 1) / 2;
+            if (i_s - i_p > 1)
+            {
+                MergeSort(i_p, i_s - 1);
+            }
+            if (i_k - i_s > 0)
+            {
+                MergeSort(i_s, i_k);
+            }
+            i1 = i_p; i2 = i_s;
+            for (i_o = i_p; i_o <= i_k; i_o++)
+            {
+                table_merge[i_o] = ((i1 == i_s) || ((i2 <= i_k) && (d[i1] > d[i2]))) ? d[i2++] : d[i1++];
+            }
+            for (i_o = i_p; i_o <= i_k; i_o++)
+            {
+                d[i_o] = table_merge[i_o];
+            }
+        }   
         private void radiobox_1_Checked(object sender, RoutedEventArgs e)
         {
             var rand = new Random();
@@ -55,30 +99,36 @@ namespace aplikacja
             for (int g = 0; g < 20; g++)
             {
                 d[g] = rand.Next(0, 30);
+                table[g] = rand.Next(0, 30);
             }
 
         }
 
         private void radiobox_2_Checked(object sender, RoutedEventArgs e)
         {
+            var rand = new Random();
 
+            for (int g = 0; g < 20; g++)
+            {
+                d[g] = rand.Next(0, 30);
+                table[g] = rand.Next(0, 30);
+            }
         }
 
         private void radiobox_3_Checked(object sender, RoutedEventArgs e)
         {
+            var rand = new Random();
 
-        }
-
-        private void btn_szybkie_Click(object sender, RoutedEventArgs e)
-        {
-            Sortuj_szybko(0, N - 1);
-            this.wynik.Clear();
-            for (i = 0; i < N; i++)  this.wynik.Text= wynik.Text.PadRight(4)+" "+d[i];
+            for (int g = 0; g < 20; g++)
+            {
+                d[g] = rand.Next(0, 30);
+                table[g] = rand.Next(0, 30);
+            }
         }
 
         private void dwa_Click(object sender, RoutedEventArgs e)
-        {   
-
+        {
+            dt.Start();
             pmin = 0; pmax = N - 2;
             do
             {
@@ -110,11 +160,13 @@ namespace aplikacja
             // Wyświetlamy wynik sortowania
             this.wynik.Clear();
             for (k = 0; k < N; k++) this.wynik.Text = wynik.Text.PadRight(4) + " " + d[k];
+            dt.Stop();
 
         }
 
         private void jeden_Click(object sender, RoutedEventArgs e)
         {
+            dt.Start();
             for (j = N - 2; j >= 0; j--)
             {   
                 x = d[j];
@@ -131,6 +183,72 @@ namespace aplikacja
             {
                this.wynik.Text += d[m].ToString() + " ";
             }
+            dt.Stop();
+        }
+
+        private void heapsort_btn_Click(object sender, RoutedEventArgs e)
+        {
+            dt.Start();
+            int a,b,c,v,l,k;
+            for (a = 2; a <= N; a++)
+            {
+                b = a; c = b / 2;
+                v = table[a];
+                while ((c > 0) && (table[c] < v))
+                {
+                    table[b] = table[c];
+                    b = c; c = b / 2;
+                }
+                table[b] = v;
+            }
+            for (a = N; a > 1; a--)
+            {
+                k = 0;
+                k = table[a];
+                table[a] = table[1];
+                table[1] = k;
+                b = 1; c = 2;
+                while (c < a)
+                {
+                    if ((c + 1 < a) && (table[c + 1] > table[c]))
+                    {
+                        l = c + 1;
+                    }
+                    else
+                    {
+                        l = c;
+                    }
+                    if (table[l] <= table[b])
+                    { 
+                        break;
+                    } 
+                    k = 0;
+                    k = table[b];
+                    table[b] = table[l];
+                    table[l] = k;
+                    b = l; 
+                    c = b + b;
+                }
+            }
+            this.wynik.Clear();
+            for (a = 1; a <= N; a++) this.wynik.Text = wynik.Text.PadRight(4) + " " + table[a];
+            dt.Stop();
+        }
+
+        private void scal_btn_Click(object sender, RoutedEventArgs e)
+        {
+            MergeSort(0, N - 1);
+            this.wynik.Clear();
+            for (i = 0; i < N; i++) this.wynik.Text = wynik.Text.PadRight(4) + " " + d[i];
+            dt.Stop();
+        }
+
+        private void szybkie_Click(object sender, RoutedEventArgs e)
+        {
+            Sortuj_szybko(0, N - 1);
+            this.wynik.Clear();
+            for (u = 0; u < N; u++) this.wynik.Text = wynik.Text.PadRight(4) + " " + d[u];
+            dt.Stop();
         }
 
         private void wynik_TextChanged(object sender, TextChangedEventArgs e)
@@ -138,4 +256,5 @@ namespace aplikacja
 
         }
     }
-}
+ }
+
